@@ -80,6 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LMSEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="LMSMetadata\LMSMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using LMS.MVC.DATA.EF;
 namespace LMS.MVC.UI.Controllers
 {
     [Authorize]
@@ -149,15 +149,26 @@ namespace LMS.MVC.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.FirstName + " " + model.LastName, Email = model.Email};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
-                    ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
+                    //var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
+                    //ViewBag.Link = callbackUrl;
+                    //return View("DisplayEmail");
+                    #region Custom User details
+                    EmpDetail newEmpDetails = new EmpDetail();
+                    newEmpDetails.EmpId = user.Id;
+                    newEmpDetails.FirstName = model.FirstName;
+                    newEmpDetails.LastName = model.LastName;
+                    LMSEntities db = new LMSEntities();
+                    db.EmpDetails.Add(newEmpDetails);
+                    db.SaveChanges();
+                    return RedirectToAction("Index","Home");
+
+                    #endregion
                 }
                 AddErrors(result);
             }

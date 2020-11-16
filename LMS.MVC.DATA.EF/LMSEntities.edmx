@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CourseDescription" Type="varchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CourseCompletions">
+          <Key>
+            <PropertyRef Name="CourseCompletionId" />
+          </Key>
+          <Property Name="CourseCompletionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="DateCompleted" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmpDetails">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lessons">
+          <Key>
+            <PropertyRef Name="LessonId" />
+          </Key>
+          <Property Name="LessonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LessonTitle" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CourseId" Type="int" Nullable="false" />
+          <Property Name="Introduction" Type="varchar" MaxLength="300" />
+          <Property Name="VideoURL" Type="varchar" MaxLength="250" />
+          <Property Name="PdfFilename" Type="varchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LessonView">
+          <Key>
+            <PropertyRef Name="LessonViewId" />
+          </Key>
+          <Property Name="LessonViewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LessonId" Type="int" Nullable="false" />
+          <Property Name="DateViewed" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CourseCompletions_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CourseCompletions" Type="Self.CourseCompletions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="CourseCompletions">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseCompletions_EmpDetails">
+          <End Role="EmpDetails" Type="Self.EmpDetails" Multiplicity="1" />
+          <End Role="CourseCompletions" Type="Self.CourseCompletions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpDetails">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="CourseCompletions">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LessonView_EmpDetails">
+          <End Role="EmpDetails" Type="Self.EmpDetails" Multiplicity="1" />
+          <End Role="LessonView" Type="Self.LessonView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpDetails">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="LessonView">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LessonView_Lessons">
+          <End Role="Lessons" Type="Self.Lessons" Multiplicity="1" />
+          <End Role="LessonView" Type="Self.LessonView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="LessonId" />
+            </Principal>
+            <Dependent Role="LessonView">
+              <PropertyRef Name="LessonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LMSModelStoreContainer">
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseCompletions" EntityType="Self.CourseCompletions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmpDetails" EntityType="Self.EmpDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LessonView" EntityType="Self.LessonView" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CourseCompletions_Course" Association="Self.FK_CourseCompletions_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="CourseCompletions" EntitySet="CourseCompletions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseCompletions_EmpDetails" Association="Self.FK_CourseCompletions_EmpDetails">
+            <End Role="EmpDetails" EntitySet="EmpDetails" />
+            <End Role="CourseCompletions" EntitySet="CourseCompletions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Course" Association="Self.FK_Lessons_Course">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LessonView_EmpDetails" Association="Self.FK_LessonView_EmpDetails">
+            <End Role="EmpDetails" EntitySet="EmpDetails" />
+            <End Role="LessonView" EntitySet="LessonView" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LessonView_Lessons" Association="Self.FK_LessonView_Lessons">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="LessonView" EntitySet="LessonView" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CourseCompletions" Relationship="Self.FK_CourseCompletions_Course" FromRole="Course" ToRole="CourseCompletions" />
+          <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_Course" FromRole="Course" ToRole="Lessons" />
+        </EntityType>
+        <EntityType Name="CourseCompletion">
+          <Key>
+            <PropertyRef Name="CourseCompletionId" />
+          </Key>
+          <Property Name="CourseCompletionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="DateCompleted" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_CourseCompletions_Course" FromRole="CourseCompletions" ToRole="Course" />
+          <NavigationProperty Name="EmpDetail" Relationship="Self.FK_CourseCompletions_EmpDetails" FromRole="CourseCompletions" ToRole="EmpDetails" />
+        </EntityType>
+        <EntityType Name="EmpDetail">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CourseCompletions" Relationship="Self.FK_CourseCompletions_EmpDetails" FromRole="EmpDetails" ToRole="CourseCompletions" />
+          <NavigationProperty Name="LessonViews" Relationship="Self.FK_LessonView_EmpDetails" FromRole="EmpDetails" ToRole="LessonView" />
+        </EntityType>
+        <EntityType Name="Lesson">
+          <Key>
+            <PropertyRef Name="LessonId" />
+          </Key>
+          <Property Name="LessonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LessonTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseId" Type="Int32" Nullable="false" />
+          <Property Name="Introduction" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="VideoURL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="PdfFilename" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_Lessons_Course" FromRole="Lessons" ToRole="Course" />
+          <NavigationProperty Name="LessonViews" Relationship="Self.FK_LessonView_Lessons" FromRole="Lessons" ToRole="LessonView" />
+        </EntityType>
+        <EntityType Name="LessonView">
+          <Key>
+            <PropertyRef Name="LessonViewId" />
+          </Key>
+          <Property Name="LessonViewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LessonId" Type="Int32" Nullable="false" />
+          <Property Name="DateViewed" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="EmpDetail" Relationship="Self.FK_LessonView_EmpDetails" FromRole="LessonView" ToRole="EmpDetails" />
+          <NavigationProperty Name="Lesson" Relationship="Self.FK_LessonView_Lessons" FromRole="LessonView" ToRole="Lessons" />
+        </EntityType>
+        <Association Name="FK_CourseCompletions_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="CourseCompletions" Type="Self.CourseCompletion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="CourseCompletions">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Lessons_Course">
+          <End Role="Course" Type="Self.Course" Multiplicity="1" />
+          <End Role="Lessons" Type="Self.Lesson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="CourseId" />
+            </Principal>
+            <Dependent Role="Lessons">
+              <PropertyRef Name="CourseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CourseCompletions_EmpDetails">
+          <End Role="EmpDetails" Type="Self.EmpDetail" Multiplicity="1" />
+          <End Role="CourseCompletions" Type="Self.CourseCompletion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpDetails">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="CourseCompletions">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LessonView_EmpDetails">
+          <End Role="EmpDetails" Type="Self.EmpDetail" Multiplicity="1" />
+          <End Role="LessonView" Type="Self.LessonView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpDetails">
+              <PropertyRef Name="EmpId" />
+            </Principal>
+            <Dependent Role="LessonView">
+              <PropertyRef Name="EmpId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LessonView_Lessons">
+          <End Role="Lessons" Type="Self.Lesson" Multiplicity="1" />
+          <End Role="LessonView" Type="Self.LessonView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lessons">
+              <PropertyRef Name="LessonId" />
+            </Principal>
+            <Dependent Role="LessonView">
+              <PropertyRef Name="LessonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="CourseCompletions" EntityType="Self.CourseCompletion" />
+          <EntitySet Name="EmpDetails" EntityType="Self.EmpDetail" />
+          <EntitySet Name="Lessons" EntityType="Self.Lesson" />
+          <EntitySet Name="LessonViews" EntityType="Self.LessonView" />
+          <AssociationSet Name="FK_CourseCompletions_Course" Association="Self.FK_CourseCompletions_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="CourseCompletions" EntitySet="CourseCompletions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Lessons_Course" Association="Self.FK_Lessons_Course">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Lessons" EntitySet="Lessons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CourseCompletions_EmpDetails" Association="Self.FK_CourseCompletions_EmpDetails">
+            <End Role="EmpDetails" EntitySet="EmpDetails" />
+            <End Role="CourseCompletions" EntitySet="CourseCompletions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LessonView_EmpDetails" Association="Self.FK_LessonView_EmpDetails">
+            <End Role="EmpDetails" EntitySet="EmpDetails" />
+            <End Role="LessonView" EntitySet="LessonViews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LessonView_Lessons" Association="Self.FK_LessonView_Lessons">
+            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="LessonView" EntitySet="LessonViews" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LMSModelStoreContainer" CdmEntityContainer="LMSEntities">
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="LMSModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="CourseDescription" ColumnName="CourseDescription" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseCompletions">
+            <EntityTypeMapping TypeName="LMSModel.CourseCompletion">
+              <MappingFragment StoreEntitySet="CourseCompletions">
+                <ScalarProperty Name="CourseCompletionId" ColumnName="CourseCompletionId" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="DateCompleted" ColumnName="DateCompleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmpDetails">
+            <EntityTypeMapping TypeName="LMSModel.EmpDetail">
+              <MappingFragment StoreEntitySet="EmpDetails">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lessons">
+            <EntityTypeMapping TypeName="LMSModel.Lesson">
+              <MappingFragment StoreEntitySet="Lessons">
+                <ScalarProperty Name="LessonId" ColumnName="LessonId" />
+                <ScalarProperty Name="LessonTitle" ColumnName="LessonTitle" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+                <ScalarProperty Name="VideoURL" ColumnName="VideoURL" />
+                <ScalarProperty Name="PdfFilename" ColumnName="PdfFilename" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LessonViews">
+            <EntityTypeMapping TypeName="LMSModel.LessonView">
+              <MappingFragment StoreEntitySet="LessonView">
+                <ScalarProperty Name="LessonViewId" ColumnName="LessonViewId" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="LessonId" ColumnName="LessonId" />
+                <ScalarProperty Name="DateViewed" ColumnName="DateViewed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

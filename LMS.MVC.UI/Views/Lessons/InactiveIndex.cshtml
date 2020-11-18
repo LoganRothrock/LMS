@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LMS.MVC.DATA.EF.Lesson>
+
+@{
+    ViewBag.Title = "InactiveIndex";
+}
+
+<h2>InactiveIndex</h2>
+
+<p>
+    @Html.ActionLink("View Active", "Index")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LessonTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Introduction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VideoURL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PdfFilename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.CourseName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LessonTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Introduction)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VideoURL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PdfFilename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course.CourseName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LessonId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LessonId }) |
+            @Html.ActionLink("Activate", "Delete", new { id=item.LessonId })
+        </td>
+    </tr>
+}
+
+</table>

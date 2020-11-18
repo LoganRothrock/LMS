@@ -1,0 +1,24 @@
+﻿@model IEnumerable<LMS.MVC.DATA.EF.Course>
+
+@{
+    ViewBag.Title = "EmpView";
+}
+
+<h2>EmpView</h2>
+
+@foreach (var item in Model) {
+    <div class="gContainer">
+        <div class="gContent">
+            @Html.DisplayFor(modelItem => item.CourseName)
+        </div>
+        <div>
+            @Html.DisplayFor(modelItem => item.CourseDescription)
+        </div>
+        @*<div>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </div>*@
+        <div class="gFooterLeft">
+            <a href=@Url.Action("EmpLessons", "Lessons", new { id = item.CourseId })>Start Learning Now!</a>
+        </div>
+    </div>
+}

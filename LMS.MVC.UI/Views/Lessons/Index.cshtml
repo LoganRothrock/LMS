@@ -6,60 +6,70 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-    @Html.ActionLink("View Inactive", "InactiveIndex")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LessonTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Introduction)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.VideoURL)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PdfFilename)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Course.CourseName)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LessonTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Introduction)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VideoURL)
-        </td>
-        <td>
-            <a href="@Url.Content("~/Content/LessonLinks/" + item.PdfFilename)" target="_blank">Click to View Document</a>
-            @Html.DisplayFor(modelItem => item.PdfFilename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Course.CourseName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.LessonId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.LessonId }) |
-            @Html.ActionLink("Deactivate", "Delete", new { id=item.LessonId })
-        </td>
-    </tr>
+@if (User.IsInRole("HR"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("View Inactive", "InactiveIndex")
+    </p>
 }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Introduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VideoURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PdfFilename)
+            </th>
+            @if (User.IsInRole("HR"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.Course.CourseName)
+            </th>
+            <th></th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LessonTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Introduction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VideoURL)
+                    </td>
+                    <td>
+                        <a href="@Url.Content("~/Content/LessonLinks/" + item.PdfFilename)" target="_blank">Click to View Document</a>
+                        @Html.DisplayFor(modelItem => item.PdfFilename)
+                    </td>
+                    @if (User.IsInRole("HR"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Course.CourseName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.LessonId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.LessonId }) |
+                        @Html.ActionLink("Deactivate", "Delete", new { id = item.LessonId })
+                    </td>
+                </tr>
+        }
+
+    </table>

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LMS.MVC.DATA.EF;
+using Microsoft.AspNet.Identity;
 
 namespace LMS.MVC.UI.Controllers
 {
@@ -25,6 +26,20 @@ namespace LMS.MVC.UI.Controllers
         }
         public ActionResult EmpView()
         {
+            string currentUserID = User.Identity.GetUserId();
+            var courseCompletion = db.CourseCompletions.Where(e => e.EmpId == currentUserID);
+            var courses = db.Courses.Include(v => v.CourseCompletions).Where(c => c.IsActive == true);
+            foreach (var course in courses)
+            {
+                foreach (var courseC in courseCompletion)
+                {
+                    if (course.CourseId == courseC.CourseId)
+                    {
+                        course.CompletedCourse = true;
+                    }
+                }
+            }
+            ViewBag.CourseComplete = courseCompletion;
             return View(db.Courses.Where(c => c.IsActive == true));
         }
         // GET: Courses/Details/5

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS.MVC.DATA.EF.LMS
+namespace LMS.MVC.DATA.EF
 {
-    [MetadataType(typeof(EmpDetailsMetadata))]
+    
 
     public class EmpDetailsMetadata
     {
@@ -33,6 +33,11 @@ namespace LMS.MVC.DATA.EF.LMS
         [Required(ErrorMessage = "* Is Active is requried")]
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
+    }
+    [MetadataType(typeof(CourseMetadata))]
+    public partial class Course
+    {
+        public bool CompletedCourse { get; set; }
     }
 
     public class CourseCompletionMetadata
@@ -61,6 +66,12 @@ namespace LMS.MVC.DATA.EF.LMS
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
     }
+    [MetadataType(typeof(LessonMetadata))]
+    public partial class Lesson
+    {
+        public bool CompletedLesson { get; set; }
+    }
+    //Add already viewed custom prop for lessons
 
     public class LessonViewMetadata
     {

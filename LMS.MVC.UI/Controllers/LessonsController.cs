@@ -21,11 +21,13 @@ namespace LMS.MVC.UI.Controllers
             var lessons = db.Lessons.Include(l => l.Course).Where(l => l.IsActive == true);
             return View(lessons.ToList());
         }
+
         public ActionResult InactiveIndex()
         {
             var lessons = db.Lessons.Include(l => l.Course).Where(l => l.IsActive == false);
             return View(lessons.ToList());
         }
+
         public ActionResult EmpLessons(int? id)
         {
             if (id == null)
@@ -35,8 +37,21 @@ namespace LMS.MVC.UI.Controllers
             string currentUserID = User.Identity.GetUserId();
             var lessonView = db.LessonViews.Where(e => e.EmpId == currentUserID);
             var lessons = db.Lessons.Include(v => v.LessonViews).Where(c => c.CourseId == id).Where(l => l.IsActive == true);
+
+            foreach (var lesson in lessons)
+            {
+                foreach (var lessonV in lessonView)
+                {
+                    if (lesson.LessonId == lessonV.LessonId)
+                    {
+                        lesson.CompletedLesson = true;
+                    }
+                }
+            }
+            ViewBag.LessonView = lessonView;
             return View(lessons.ToList());
         }
+
         // GET: Lessons/Details/5
         public ActionResult Details(int? id)
         {
@@ -48,6 +63,47 @@ namespace LMS.MVC.UI.Controllers
             if (lesson == null)
             {
                 return HttpNotFound();
+            }
+            if (lesson.VideoURL != null)
+            {
+                var v = lesson.VideoURL.IndexOf("v=");
+                var amp = lesson.VideoURL.IndexOf("&", v);
+                string vid;
+                if (amp == -1)
+                {
+                    vid = lesson.VideoURL.Substring(v + 2);
+                }
+                else
+                {
+                    vid = lesson.VideoURL.Substring(v + 2, amp - (v - 2));
+                }
+                ViewBag.VideoID = vid;
+            }
+            //TODO Make conditional statement to check if the employee already completed the lesson
+            if (lesson.CompletedLesson != true)
+            {
+                LessonView lessonViewed = new LessonView();
+                lessonViewed.EmpId = User.Identity.GetUserId();
+                lessonViewed.LessonId = lesson.LessonId;
+                lessonViewed.DateViewed = DateTime.Now.Date;
+                db.LessonViews.Add(lessonViewed);
+                db.SaveChanges();
+            }
+            string userId = User.Identity.GetUserId();
+            lesson.CompletedLesson = true;
+            var courseCheck = db.Courses.Where(c => c.CourseId == lesson.CourseId).FirstOrDefault();
+            var lessonsViewed = db.LessonViews.Where(l => l.EmpId == userId);
+            if (lessonsViewed.Where(lv => lv.LessonId == lesson.LessonId).Count() + db.Lessons.Where(l => l.IsActive == false).Count() == db.Lessons.Where(l => l.CourseId == courseCheck.CourseId).Count())
+            {
+                if (courseCheck.CompletedCourse != true)
+                {
+                    CourseCompletion courseCompleted = new CourseCompletion();
+                    courseCompleted.EmpId = User.Identity.GetUserId();
+                    courseCompleted.CourseId = courseCheck.CourseId;
+                    courseCompleted.DateCompleted = DateTime.Now.Date;
+                    db.CourseCompletions.Add(courseCompleted);
+                    db.SaveChanges();
+                }
             }
             return View(lesson);
         }
@@ -84,22 +140,6 @@ namespace LMS.MVC.UI.Controllers
                 {
                     pdfLink = "noPDF.pdf";
                 }
-                //if (lessonVideoUrl != null)
-                //{
-                //    var v = lessonVideoUrl.IndexOf("v=");
-                //    var amp = lessonVideoUrl.IndexOf("&", v);
-                //    string vid;
-                //    if (amp == -1)
-                //    {
-                //        vid = lessonVideoUrl.Substring(v + 2);
-                //    }
-                //    else
-                //    {
-                //        vid = lessonVideoUrl.Substring(v + 2, amp - (v + 2));
-                //    }
-                //    ViewBag.VideoID = vid;
-
-                //}
                 lesson.PdfFilename = pdfLink;
                 db.Lessons.Add(lesson);
                 db.SaveChanges();

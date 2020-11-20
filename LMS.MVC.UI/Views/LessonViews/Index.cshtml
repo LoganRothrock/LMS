@@ -1,0 +1,49 @@
+﻿@model IEnumerable<LMS.MVC.DATA.EF.LessonView>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateViewed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpDetail.EmpName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lesson.LessonTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lesson.Course)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateViewed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpDetail.EmpName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lesson.LessonTitle)
+        </td>
+        <th>
+            @Html.DisplayFor(modelItem => item.Lesson.Course.CourseName)
+        </th>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LessonViewId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LessonViewId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LessonViewId })
+        </td>*@
+    </tr>
+}
+
+</table>

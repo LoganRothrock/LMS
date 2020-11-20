@@ -16,14 +16,17 @@ namespace LMS.MVC.UI.Controllers
         private LMSEntities db = new LMSEntities();
 
         // GET: Courses
+        [Authorize(Roles = "HR")]
         public ActionResult Index()
         {
             return View(db.Courses.Where(c => c.IsActive == true));
         }
+        [Authorize(Roles = "HR")]
         public ActionResult InactiveIndex()
         {
             return View(db.Courses.Where(c => c.IsActive == false));
         }
+        [Authorize(Roles = "Employee")]
         public ActionResult EmpView()
         {
             string currentUserID = User.Identity.GetUserId();
@@ -43,6 +46,7 @@ namespace LMS.MVC.UI.Controllers
             return View(db.Courses.Where(c => c.IsActive == true));
         }
         // GET: Courses/Details/5
+        [Authorize(Roles = "HR")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -58,6 +62,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: Courses/Create
+        [Authorize(Roles = "HR")]
         public ActionResult Create()
         {
             return View();
@@ -68,6 +73,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR")]
         public ActionResult Create([Bind(Include = "CourseId,CourseName,CourseDescription,IsActive")] Course course)
         {
             if (ModelState.IsValid)
@@ -81,6 +87,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: Courses/Edit/5
+        [Authorize(Roles = "HR")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -100,6 +107,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR")]
         public ActionResult Edit([Bind(Include = "CourseId,CourseName,CourseDescription,IsActive")] Course course)
         {
             if (ModelState.IsValid)
@@ -112,6 +120,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: Courses/Delete/5
+        [Authorize(Roles = "HR")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -129,6 +138,7 @@ namespace LMS.MVC.UI.Controllers
         // POST: Courses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR")]
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);

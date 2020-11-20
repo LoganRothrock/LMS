@@ -82,10 +82,9 @@
                                     <li class="has-dropdown">
                                         <a href="">Manager Features</a>
                                         <ul class="dropdown">
-                                            <li><a href="#">Web Design</a></li>
-                                            <li><a href="#">eCommerce</a></li>
-                                            <li><a href="#">Branding</a></li>
-                                            <li><a href="#">API</a></li>
+                                            <li><a href=@Url.Action("Index","CourseCompletions")>Completed Courses</a></li>
+                                            <li><a href=@Url.Action("Index","LessonViews")>Completed Lessons</a></li>
+                                            <li><a href=@Url.Action("Index","EmpDetails")>Employee Progress</a></li>
                                         </ul>
                                     </li>
                                 }
@@ -113,8 +112,8 @@
                                 @*<li><a href="teacher.html">Teacher</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="pricing.html">Pricing</a></li>*@
-                                <li><a href="contact.html">Contact</a></li>
-                                <li class="btn-cta"><a href="#"><span>Login</span></a></li>
+                                <li><a href=@Url.Action("Contact","Home")>Contact</a></li>
+                                @Html.Partial("_LoginPartial")
                             </ul>
                         </div>
                     </div>

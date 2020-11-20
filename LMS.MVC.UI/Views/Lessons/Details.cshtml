@@ -63,14 +63,14 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.LessonId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId }) |
     @if (User.IsInRole("HR"))
     {
         @Html.ActionLink("Back to List", "Index")
     }
     else if (User.IsInRole("Employee"))
     {
-    @Html.ActionLink("Back to List", "EmpLessons")
+    @Html.ActionLink("Back to List", "EmpLessons", new { id = Model.CourseId })
     }
 </p>
 <script src="http://youtube.com/player_api"></script>

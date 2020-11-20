@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using LMS.MVC.DATA.EF;
@@ -16,18 +17,19 @@ namespace LMS.MVC.UI.Controllers
         private LMSEntities db = new LMSEntities();
 
         // GET: Lessons
+        [Authorize(Roles = "HR")]
         public ActionResult Index()
         {
             var lessons = db.Lessons.Include(l => l.Course).Where(l => l.IsActive == true);
             return View(lessons.ToList());
         }
-
+        [Authorize(Roles = "HR")]
         public ActionResult InactiveIndex()
         {
             var lessons = db.Lessons.Include(l => l.Course).Where(l => l.IsActive == false);
             return View(lessons.ToList());
         }
-
+        [Authorize(Roles = "Employee")]
         public ActionResult EmpLessons(int? id)
         {
             if (id == null)
@@ -36,7 +38,7 @@ namespace LMS.MVC.UI.Controllers
             }
             string currentUserID = User.Identity.GetUserId();
             var lessonView = db.LessonViews.Where(e => e.EmpId == currentUserID);
-            var lessons = db.Lessons.Include(v => v.LessonViews).Where(c => c.CourseId == id).Where(l => l.IsActive == true);
+            var lessons = db.Lessons.Where(c => c.CourseId == id).Where(l => l.IsActive == true);
 
             foreach (var lesson in lessons)
             {
@@ -53,8 +55,10 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: Lessons/Details/5
-        public ActionResult Details(int? id)
+        [Authorize(Roles = "Employee, HR")]
+        public ActionResult Details(int? id, bool? cl)
         {
+            string userId = User.Identity.GetUserId();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -79,36 +83,66 @@ namespace LMS.MVC.UI.Controllers
                 }
                 ViewBag.VideoID = vid;
             }
-            //TODO Make conditional statement to check if the employee already completed the lesson
-            if (lesson.CompletedLesson != true)
+            if (User.IsInRole("HR"))
             {
+                return View(lesson);
+            }
+            if (cl != true)
+            {
+                lesson.CompletedLesson = true;
                 LessonView lessonViewed = new LessonView();
-                lessonViewed.EmpId = User.Identity.GetUserId();
+                lessonViewed.EmpId = userId;
                 lessonViewed.LessonId = lesson.LessonId;
                 lessonViewed.DateViewed = DateTime.Now.Date;
                 db.LessonViews.Add(lessonViewed);
                 db.SaveChanges();
             }
-            string userId = User.Identity.GetUserId();
-            lesson.CompletedLesson = true;
             var courseCheck = db.Courses.Where(c => c.CourseId == lesson.CourseId).FirstOrDefault();
             var lessonsViewed = db.LessonViews.Where(l => l.EmpId == userId);
-            if (lessonsViewed.Where(lv => lv.LessonId == lesson.LessonId).Count() + db.Lessons.Where(l => l.IsActive == false).Count() == db.Lessons.Where(l => l.CourseId == courseCheck.CourseId).Count())
+            if (lessonsViewed.Where(lv => lv.Lesson.CourseId == courseCheck.CourseId).Count() + db.Lessons.Where(l => l.CourseId == courseCheck.CourseId).Where(l => l.IsActive == false).Count() == db.Lessons.Where(l => l.CourseId == courseCheck.CourseId).Count())
             {
-                if (courseCheck.CompletedCourse != true)
-                {
+                var coursesCompleted = db.CourseCompletions.Where(cc => cc.EmpId == userId);
+                if (coursesCompleted.Where(cc => cc.CourseId == courseCheck.CourseId).Count() == 0)
+                { 
+                //    courseCheck.CompletedCourse = true;
+                //}
+                //if (courseCheck.CompletedCourse != true)
                     CourseCompletion courseCompleted = new CourseCompletion();
-                    courseCompleted.EmpId = User.Identity.GetUserId();
+                    courseCompleted.EmpId = userId;
                     courseCompleted.CourseId = courseCheck.CourseId;
                     courseCompleted.DateCompleted = DateTime.Now.Date;
-                    db.CourseCompletions.Add(courseCompleted);
-                    db.SaveChanges();
+                    if (!db.CourseCompletions.Contains(courseCompleted))
+                    {
+                        db.CourseCompletions.Add(courseCompleted);
+                        db.SaveChanges();
+                    }
+                    #region Email to manager
+                    var emp = db.EmpDetails.Where(e => e.EmpId == courseCompleted.EmpId).FirstOrDefault();
+                    var course = db.Courses.Where(c => c.CourseId == courseCompleted.CourseId).FirstOrDefault();
+                    string body = $"{emp.EmpName} has completed the following course {course.CourseName}";
+
+                    MailMessage m = new MailMessage("no-reply@loganrothrock.com", "loganrothrock@gmail.com", "Completed Course", body);
+                    m.IsBodyHtml = true;
+                    m.Priority = MailPriority.High;
+
+                    SmtpClient client = new SmtpClient("mail.loganrothrock.com");
+                    client.Credentials = new NetworkCredential("no-reply@loganrothrock.com", "WorstUrchin7539!");
+                    try
+                    {
+                        client.Send(m);
+                    }
+                    catch (Exception e)
+                    {
+                        ViewBag.Message = e.StackTrace;
+                    }
+                    #endregion
                 }
             }
             return View(lesson);
         }
 
         // GET: Lessons/Create
+        [Authorize(Roles ="HR")]
         public ActionResult Create()
         {
             ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "CourseName");
@@ -120,6 +154,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR")]
         public ActionResult Create([Bind(Include = "LessonId,LessonTitle,CourseId,Introduction,VideoURL,PdfFilename,IsActive")] Lesson lesson, HttpPostedFileBase lessonVideoURl, HttpPostedFileBase lessonPDFFile)
         {
             if (ModelState.IsValid)
@@ -151,6 +186,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: Lessons/Edit/5
+        [Authorize(Roles = "HR")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -171,6 +207,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR")]
         public ActionResult Edit([Bind(Include = "LessonId,LessonTitle,CourseId,Introduction,VideoURL,PdfFilename,IsActive")] Lesson lesson, HttpPostedFileBase lessonVideoURl, HttpPostedFileBase lessonPDFFile)
         {
             if (ModelState.IsValid)
@@ -199,6 +236,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: Lessons/Delete/5
+        [Authorize(Roles = "HR")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -216,6 +254,7 @@ namespace LMS.MVC.UI.Controllers
         // POST: Lessons/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR")]
         public ActionResult DeleteConfirmed(int id)
         {
             Lesson lesson = db.Lessons.Find(id);

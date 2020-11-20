@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace LMS.MVC.UI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "HR")]
     public class UsersAdminController : Controller
     {
         public UsersAdminController()

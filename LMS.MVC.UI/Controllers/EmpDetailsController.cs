@@ -15,12 +15,14 @@ namespace LMS.MVC.UI.Controllers
         private LMSEntities db = new LMSEntities();
 
         // GET: EmpDetails
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Index()
         {
             return View(db.EmpDetails.ToList());
         }
 
         // GET: EmpDetails/Details/5
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -36,6 +38,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: EmpDetails/Create
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Create()
         {
             return View();
@@ -46,6 +49,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Create([Bind(Include = "EmpId,FirstName,LastName")] EmpDetail empDetail)
         {
             if (ModelState.IsValid)
@@ -59,6 +63,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: EmpDetails/Edit/5
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -78,6 +83,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Edit([Bind(Include = "EmpId,FirstName,LastName")] EmpDetail empDetail)
         {
             if (ModelState.IsValid)
@@ -90,6 +96,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: EmpDetails/Delete/5
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -107,6 +114,7 @@ namespace LMS.MVC.UI.Controllers
         // POST: EmpDetails/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "HR, Manager")]
         public ActionResult DeleteConfirmed(string id)
         {
             EmpDetail empDetail = db.EmpDetails.Find(id);

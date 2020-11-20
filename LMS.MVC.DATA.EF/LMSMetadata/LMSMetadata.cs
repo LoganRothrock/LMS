@@ -7,17 +7,23 @@ using System.Threading.Tasks;
 
 namespace LMS.MVC.DATA.EF
 {
-    
 
-    public class EmpDetailsMetadata
+
+    public class EmpDetailMetadata
     {
         [Required(ErrorMessage = "* First Name is required")]
-        [StringLength(50,ErrorMessage = "* First name cannot be greater than 50 characters")]
+        [StringLength(50, ErrorMessage = "* First name cannot be greater than 50 characters")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "* Last Name is required")]
         [StringLength(50, ErrorMessage = "* Last name cannot be greater than 50 characters")]
         public string LastName { get; set; }
+    }
+    [MetadataType(typeof(EmpDetailMetadata))]
+    public partial class EmpDetail{
+
+        [Display(Name = "Employee Name")]
+        public string EmpName { get { return FirstName + " " + LastName; } }
     }
 
     public class CourseMetadata

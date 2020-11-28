@@ -1,10 +1,8 @@
 ﻿@model IEnumerable<LMS.MVC.DATA.EF.Lesson>
 
-@{
-    ViewBag.Title = "EmpLessons";
-}
 
-<h2>EmpLessons</h2>
+
+<h2>@ViewBag.CurrentCourse</h2>
 
 
 <table class="table">
@@ -16,6 +14,9 @@
             @Html.DisplayNameFor(model => model.Introduction)
         </th>
         <th>
+            <p>Completed</p>
+        </th>
+        @*<th>
             @Html.DisplayNameFor(model => model.VideoURL)
         </th>
         <th>
@@ -23,7 +24,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Course.CourseName)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -39,18 +40,28 @@
                     @Html.DisplayFor(modelItem => item.Introduction)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.VideoURL)
+                    @if (item.CompletedLesson == true)
+                    {
+                        <p style="color:green">Completed</p>
+                    }
+                    else
+                    {
+                        <p style="color:red">Incomplete</p>
+                    }
                 </td>
-                <td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.VideoURL)
+                </td>*@
+                @*<td>
                     <a href="@Url.Content("~/Content/LessonLinks/" + item.PdfFilename)" target="_blank">Click to View Document</a>
                     @Html.DisplayFor(modelItem => item.PdfFilename)
-                </td>
-                <td>
+                </td>*@
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Course.CourseName)
-                </td>
+                </td>*@
                 <td>
                     @*@Html.ActionLink("Edit", "Edit", new { id = item.LessonId }) |*@
-                    @Html.ActionLink("Details", "Details", new { id = item.LessonId , cl = item.CompletedLesson})
+                    @Html.ActionLink("Start Learning", "Details", new { id = item.LessonId , cl = item.CompletedLesson})
                     @*@Html.ActionLink("Deactivate", "Delete", new { id = item.LessonId })*@
                 </td>
             </tr>

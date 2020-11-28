@@ -21,6 +21,13 @@ namespace LMS.MVC.UI.Controllers
             var courseCompletions = db.CourseCompletions.Include(c => c.Course).Include(c => c.EmpDetail);
             return View(courseCompletions.ToList());
         }
+        public ActionResult EmpProgress()
+        {
+            var activeCourses = db.Courses.Where(c => c.IsActive == true).Count();
+            var empProgress = db.EmpDetails.Include(c => c.CourseCompletions);
+            ViewBag.ActiveCourses = activeCourses;
+            return View(empProgress);
+        }
 
         // GET: CourseCompletions/Details/5
         public ActionResult Details(int? id)

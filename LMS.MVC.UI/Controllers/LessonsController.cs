@@ -50,6 +50,8 @@ namespace LMS.MVC.UI.Controllers
                     }
                 }
             }
+            var Course = db.Courses.Where(c => c.CourseId == id);
+            ViewBag.CurrentCourse = Course.SingleOrDefault().CourseName;
             ViewBag.LessonView = lessonView;
             return View(lessons.ToList());
         }
@@ -111,11 +113,8 @@ namespace LMS.MVC.UI.Controllers
                     courseCompleted.EmpId = userId;
                     courseCompleted.CourseId = courseCheck.CourseId;
                     courseCompleted.DateCompleted = DateTime.Now.Date;
-                    if (!db.CourseCompletions.Contains(courseCompleted))
-                    {
-                        db.CourseCompletions.Add(courseCompleted);
-                        db.SaveChanges();
-                    }
+                    db.CourseCompletions.Add(courseCompleted);
+                    db.SaveChanges();
                     #region Email to manager
                     var emp = db.EmpDetails.Where(e => e.EmpId == courseCompleted.EmpId).FirstOrDefault();
                     var course = db.Courses.Where(c => c.CourseId == courseCompleted.CourseId).FirstOrDefault();

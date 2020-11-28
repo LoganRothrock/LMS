@@ -19,6 +19,7 @@ namespace LMS.MVC.UI.Controllers
         [Authorize(Roles = "HR")]
         public ActionResult Index()
         {
+
             return View(db.Courses.Where(c => c.IsActive == true));
         }
         [Authorize(Roles = "HR")]

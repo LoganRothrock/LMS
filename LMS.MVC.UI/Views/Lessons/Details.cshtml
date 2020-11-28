@@ -3,79 +3,89 @@
 @{
     ViewBag.Title = "Details";
 }
+<body style="text-align:center">
 
-<h2>Details</h2>
 
-<div>
-    <h4>Lesson</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.LessonTitle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LessonTitle)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Introduction)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Introduction)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoURL)
-        </dt>
-
-        <dd>
-            <div id="player">
-
-            </div>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PdfFilename)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PdfFilename)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.CourseName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course.CourseName)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId }) |
     @if (User.IsInRole("HR"))
     {
-        @Html.ActionLink("Back to List", "Index")
+        <h2>@Html.DisplayFor(model => model.LessonTitle) Details</h2>
     }
     else if (User.IsInRole("Employee"))
     {
-    @Html.ActionLink("Back to List", "EmpLessons", new { id = Model.CourseId })
+        <h2>@Html.DisplayFor(model => model.LessonTitle)</h2>
     }
-</p>
-<script src="http://youtube.com/player_api"></script>
 
-<script>
+    <div>
+        <hr />
+        <dl>
+            @if (User.IsInRole("HR"))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.LessonTitle)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.LessonTitle)
+                </dd>
+            }
+            <dt>
+                @Html.DisplayNameFor(model => model.Introduction)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Introduction)
+            </dd>
+
+            <dt>
+                @Html.DisplayFor(model => model.VideoURL)
+            </dt>
+
+            <dd>
+                <div id="player">
+
+                </div>
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PdfFilename)
+            </dt>
+
+            <dd>
+                <a href="@Url.Content("~/Content/LessonLinks/" + Html.DisplayFor(model => model.PdfFilename))" target="_blank">View @Html.DisplayFor(model => model.LessonTitle) information</a>
+            </dd>
+            @if (User.IsInRole("HR"))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsActive)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Course.CourseName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Course.CourseName)
+                </dd>
+            }
+
+        </dl>
+    </div>
+    <p>
+        @if (User.IsInRole("HR"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId })
+            @Html.ActionLink("Back to Lessons", "Index")
+        }
+        else if (User.IsInRole("Employee"))
+        {
+            @Html.ActionLink("Back to Lessons", "EmpLessons", new { id = Model.CourseId })
+        }
+    </p>
+</body>
+    <script src="http://youtube.com/player_api"></script>
+
+    <script>
     var player;
     var h = '@ViewBag.height';
     var w = '@ViewBag.width';
@@ -112,4 +122,4 @@
             alert('done');
         }
     }
-</script>
+    </script>

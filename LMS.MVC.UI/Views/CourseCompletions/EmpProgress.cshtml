@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LMS.MVC.DATA.EF.EmpDetail>
+
+@{
+    ViewBag.Title = "EmpProgress";
+}
+
+<h2>EmpProgress</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            <p>Courses Completed</p>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            <p>@item.CourseCompletions.Count()/@ViewBag.ActiveCourses</p>
+        </td>
+        <td>
+            @Html.ActionLink("More Info", "Details", new { id=item.EmpId })
+        </td>
+    </tr>
+}
+
+</table>

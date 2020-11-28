@@ -4,7 +4,7 @@
     ViewBag.Title = "EmpView";
 }
 
-<h2>EmpView</h2>
+<h2 style="text-align:center">Courses</h2>
 
 @foreach (var item in Model)
 {
@@ -22,6 +22,16 @@
                 </div>*@
             <div class="gFooterLeft">
                 <a href=@Url.Action("EmpLessons", "Lessons", new { id = item.CourseId })>Start Learning Now!</a>
+            </div>
+            <div class="gFooterRight">
+                @if (item.CompletedCourse == true)
+                {
+                    <p style="color:green">Completed</p>
+                }
+                else
+                {
+                    <p style="color:red">Incomplete</p>
+                }
             </div>
         </div>
     @*}*@

@@ -24,6 +24,8 @@ namespace LMS.MVC.DATA.EF
 
         [Display(Name = "Employee Name")]
         public string EmpName { get { return FirstName + " " + LastName; } }
+
+        public string EmpRole { get; set; }
     }
 
     public class CourseMetadata

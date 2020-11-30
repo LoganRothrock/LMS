@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<LMS.MVC.DATA.EF.Course>
 
-<h2>@ViewBag.Employee Course Progress</h2>
+<h2 style="text-align:center">@ViewBag.Employee Course Progress</h2>
 
 <table class="table">
     <tr>
@@ -40,3 +40,4 @@
 }
 
 </table>
+<h3 class="text-center">@Html.ActionLink("Back to Employee Progress", "EmpProgress")</h3>

@@ -53,6 +53,7 @@ namespace LMS.MVC.UI.Controllers
             var Course = db.Courses.Where(c => c.CourseId == id);
             ViewBag.CurrentCourse = Course.SingleOrDefault().CourseName;
             ViewBag.LessonView = lessonView;
+            ViewBag.User = currentUserID;
             return View(lessons.ToList());
         }
 

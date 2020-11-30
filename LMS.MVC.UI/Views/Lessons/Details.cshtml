@@ -79,7 +79,7 @@
         }
         else if (User.IsInRole("Employee"))
         {
-            @Html.ActionLink("Back to Lessons", "EmpLessons", new { id = Model.CourseId })
+            <h3>@Html.ActionLink("Back to Lessons", "EmpLessons", new { id = Model.CourseId })</h3>
         }
     </p>
 </body>

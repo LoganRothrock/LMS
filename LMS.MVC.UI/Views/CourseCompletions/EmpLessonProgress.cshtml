@@ -1,36 +1,39 @@
 ﻿@model IEnumerable<LMS.MVC.DATA.EF.Lesson>
 
 
+<section style="text-align:center">
+    <h2>@ViewBag.Employee.EmpName Lesson Progress</h2>
 
-<h2>@ViewBag.Employee Lesson Progress</h2>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonTitle)
+            </th>
+            <th>
+                Completed?
+            </th>
+            <th></th>
+        </tr>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LessonTitle)
-        </th>
-        <th>
-            Completed?
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonTitle)
+                </td>
+                <td>
+                    @if (item.CompletedLesson == true)
+                    {
+                        <p style="color:green">Completed</p>
+                    }
+                    else
+                    {
+                        <p style="color:red">Incomplete</p>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+    <h3>@Html.ActionLink("Back to Course Progress","EmpCourseProgress",new { id = (ViewBag.Employee.EmpId) })</h3>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LessonTitle)
-        </td>
-        <td>
-            @if (item.CompletedLesson == true)
-            {
-                <p style="color:green">Completed</p>
-            }
-            else
-            {
-                <p style="color:red">Incomplete</p>
-            }
-        </td>
-    </tr>
-}
-
-</table>
+</section>

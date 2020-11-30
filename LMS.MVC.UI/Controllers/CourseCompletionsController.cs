@@ -25,8 +25,20 @@ namespace LMS.MVC.UI.Controllers
         public ActionResult EmpProgress()
         {
             //TODO Add a filter that only shows employee progress and not managers or HR
+            var empR = db.AspNetRoles.Where(r => r.Name.Contains("Employee")).FirstOrDefault();
+            var employees = db.AspNetUserRoles.Where(ur => ur.RoleId == empR.Id);
             var activeCourses = db.Courses.Where(c => c.IsActive == true).Count();
             var empProgress = db.EmpDetails.Include(c => c.CourseCompletions);
+            foreach (var emp in employees)
+            {
+                foreach (var empP in empProgress)
+                {
+                    if (emp.UserId == empP.EmpId)
+                    {
+                        empP.EmpRole = "Employee";
+                    }
+                }
+            }
             ViewBag.ActiveCourses = activeCourses;
             return View(empProgress);
         }
@@ -70,7 +82,7 @@ namespace LMS.MVC.UI.Controllers
                     }
                 }
             }
-            ViewBag.Employee = employee.EmpName;
+            ViewBag.Employee = employee;
             ViewBag.LessonView = lessonView;
             return View(lessons);
         }

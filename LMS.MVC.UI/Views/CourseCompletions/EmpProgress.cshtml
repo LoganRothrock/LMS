@@ -3,9 +3,8 @@
 @{
     ViewBag.Title = "Employee Progress";
 }
-
+<section style="text-align:center">
 <h2>@ViewBag.Title</h2>
-
 
 <table class="table">
     <tr>
@@ -15,22 +14,27 @@
         <th>
             <p>Courses Completed</p>
         </th>
-        <th></th>
+       
     </tr>
 
     @foreach (var item in Model)
     {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmpName)
-                </td>
-                <td>
-                    <p>@item.CourseCompletions.Count()/@ViewBag.ActiveCourses</p>
-                </td>
-                <td>
-                    @Html.ActionLink("More Info", "EmpCourseProgress", new { id = item.EmpId })
-                </td>
-            </tr>
+        if (item.EmpRole == "Employee")
+        {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmpName)
+            </td>
+            <td>
+                <p>@item.CourseCompletions.Count()/@ViewBag.ActiveCourses</p>
+            </td>
+            <td>
+                @Html.ActionLink("More Info", "EmpCourseProgress", new { id = item.EmpId })
+            </td>
+        </tr>
+        }
     }
 
 </table>
+</section>

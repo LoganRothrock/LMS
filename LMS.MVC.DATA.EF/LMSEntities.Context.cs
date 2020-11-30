@@ -30,5 +30,7 @@ namespace LMS.MVC.DATA.EF
         public virtual DbSet<EmpDetail> EmpDetails { get; set; }
         public virtual DbSet<Lesson> Lessons { get; set; }
         public virtual DbSet<LessonView> LessonViews { get; set; }
+        public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
     }
 }

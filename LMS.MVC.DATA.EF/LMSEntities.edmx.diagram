@@ -15,6 +15,9 @@
         <AssociationConnector Association="LMSModel.FK_CourseCompletions_EmpDetails" ManuallyRouted="false" />
         <AssociationConnector Association="LMSModel.FK_LessonView_EmpDetails" ManuallyRouted="false" />
         <AssociationConnector Association="LMSModel.FK_LessonView_Lessons" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LMSModel.AspNetUserRole" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="LMSModel.AspNetRole" Width="1.5" PointX="3.125" PointY="0.75" />
+        <AssociationConnector Association="LMSModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

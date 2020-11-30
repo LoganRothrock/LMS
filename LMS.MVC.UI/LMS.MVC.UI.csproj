@@ -572,6 +572,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\EmailConfirmation.cshtml" />
     <Content Include="Views\CourseCompletions\EmpProgress.cshtml" />
+    <Content Include="Views\CourseCompletions\EmpCourseProgress.cshtml" />
+    <Content Include="Views\CourseCompletions\EmpLessonProgress.cshtml" />
+    <Content Include="Views\CourseCompletions\RenderLessons.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

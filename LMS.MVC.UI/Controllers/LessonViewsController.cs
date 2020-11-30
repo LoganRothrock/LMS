@@ -15,6 +15,7 @@ namespace LMS.MVC.UI.Controllers
         private LMSEntities db = new LMSEntities();
 
         // GET: LessonViews
+        [Authorize(Roles = "Manager")]
         public ActionResult Index()
         {
             var lessonViews = db.LessonViews.Include(l => l.EmpDetail).Include(l => l.Lesson);
@@ -22,6 +23,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: LessonViews/Details/5
+        [Authorize(Roles = "Manager")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: LessonViews/Create
+        [Authorize(Roles = "Manager")]
         public ActionResult Create()
         {
             ViewBag.EmpId = new SelectList(db.EmpDetails, "EmpId", "FirstName");
@@ -49,6 +52,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public ActionResult Create([Bind(Include = "LessonViewId,EmpId,LessonId,DateViewed")] LessonView lessonView)
         {
             if (ModelState.IsValid)
@@ -64,6 +68,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: LessonViews/Edit/5
+        [Authorize(Roles = "Manager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,6 +90,7 @@ namespace LMS.MVC.UI.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public ActionResult Edit([Bind(Include = "LessonViewId,EmpId,LessonId,DateViewed")] LessonView lessonView)
         {
             if (ModelState.IsValid)
@@ -99,6 +105,7 @@ namespace LMS.MVC.UI.Controllers
         }
 
         // GET: LessonViews/Delete/5
+        [Authorize(Roles = "Manager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -116,6 +123,7 @@ namespace LMS.MVC.UI.Controllers
         // POST: LessonViews/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public ActionResult DeleteConfirmed(int id)
         {
             LessonView lessonView = db.LessonViews.Find(id);

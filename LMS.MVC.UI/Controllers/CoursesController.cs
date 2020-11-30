@@ -19,7 +19,6 @@ namespace LMS.MVC.UI.Controllers
         [Authorize(Roles = "HR")]
         public ActionResult Index()
         {
-
             return View(db.Courses.Where(c => c.IsActive == true));
         }
         [Authorize(Roles = "HR")]
@@ -27,12 +26,13 @@ namespace LMS.MVC.UI.Controllers
         {
             return View(db.Courses.Where(c => c.IsActive == false));
         }
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee, Manager")]
         public ActionResult EmpView()
         {
             string currentUserID = User.Identity.GetUserId();
             var courseCompletion = db.CourseCompletions.Where(e => e.EmpId == currentUserID);
             var courses = db.Courses.Include(v => v.CourseCompletions).Where(c => c.IsActive == true);
+
             foreach (var course in courses)
             {
                 foreach (var courseC in courseCompletion)
@@ -45,6 +45,7 @@ namespace LMS.MVC.UI.Controllers
             }
             ViewBag.CourseComplete = courseCompletion;
             return View(db.Courses.Where(c => c.IsActive == true));
+
         }
         // GET: Courses/Details/5
         [Authorize(Roles = "HR")]

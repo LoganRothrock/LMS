@@ -1,0 +1,42 @@
+﻿@model IEnumerable<LMS.MVC.DATA.EF.Course>
+
+<h2>@ViewBag.Employee Course Progress</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CourseName)
+        </th>
+        <th>
+            Completed?
+        </th>
+        <th>
+            Lessons Completed
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CourseName)
+        </td>
+        <td>
+            @if (item.CompletedCourse == true)
+            {
+                <p style="color:green">Completed</p>
+            } else
+            {
+                <p style="color:red">Incomplete</p>
+            }
+        </td>
+        <td>
+            @{Html.RenderAction("RenderLessons", "CourseCompletions", new { empId = (ViewBag.Emp), courseId = item.CourseId });}
+        </td>
+        <td>
+            @Html.ActionLink("More Info", "EmpLessonProgress", new { id=(ViewBag.Emp) , cid = item.CourseId })
+        </td>
+    </tr>
+}
+
+</table>

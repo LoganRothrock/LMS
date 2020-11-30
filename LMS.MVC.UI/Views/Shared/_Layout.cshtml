@@ -79,14 +79,9 @@
                                 }
                                 else if (User.IsInRole("Manager"))
                                 {
-                                    <li class="has-dropdown">
-                                        <a href="">Manager Features</a>
-                                        <ul class="dropdown">
-                                            <li><a href=@Url.Action("Index","CourseCompletions")>Completed Courses</a></li>
-                                            <li><a href=@Url.Action("Index","LessonViews")>Completed Lessons</a></li>
-                                            <li><a href=@Url.Action("Index","EmpDetails")>Employee Progress</a></li>
-                                        </ul>
-                                    </li>
+
+                                     <li><a href=@Url.Action("EmpProgress","CourseCompletions")>Employee Progress</a></li>
+
                                 }
                                 else if (User.IsInRole("HR"))
                                 {

@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNetRole.cs">
+      <DependentUpon>LMSEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserRole.cs">
+      <DependentUpon>LMSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Course.cs">
       <DependentUpon>LMSEntities.tt</DependentUpon>
     </Compile>

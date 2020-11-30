@@ -46,7 +46,7 @@
                 </div>
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.PdfFilename)
+                Lesson PDF
             </dt>
 
             <dd>
@@ -74,12 +74,12 @@
     <p>
         @if (User.IsInRole("HR"))
         {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId })
-            @Html.ActionLink("Back to Lessons", "Index")
+            @Html.ActionLink("Edit", "Edit", new { id = Model.LessonId }, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Back to Lessons", "Index", null, new { @class = "btn btn-primary" })
         }
         else if (User.IsInRole("Employee"))
         {
-            <h3>@Html.ActionLink("Back to Lessons", "EmpLessons", new { id = Model.CourseId })</h3>
+            <h3>@Html.ActionLink("Back to Lessons", "EmpLessons",new { id = Model.CourseId }, new { @class = "btn btn-primary"})</h3>
         }
     </p>
 </body>

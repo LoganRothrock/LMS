@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<LMS.MVC.DATA.EF.Course>
 
 @{
-    ViewBag.Title = "InactiveIndex";
+    ViewBag.Title = "Inactive Courses";
 }
+<section style="text-align:center">
+    <h2>@ViewBag.Title</h2>
 
-<h2>InactiveIndex</h2>
-
-<p>
-    @Html.ActionLink("View Active", "Index")
-</p>
+    <p>
+        @Html.ActionLink("View Active", "Index", null, new { @class = "btn btn-primary" })
+    </p>
+</section>
 <table class="table">
     <tr>
         <th>

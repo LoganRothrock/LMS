@@ -8,31 +8,27 @@
 
 @foreach (var item in Model)
 {
-    //if (item.CompletedCourse != true)
-    //{
-        <div class="gContainer">
-            <div class="gContent">
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </div>
-            <div>
-                @Html.DisplayFor(modelItem => item.CourseDescription)
-            </div>
-            @*<div>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </div>*@
-            <div class="gFooterLeft">
-                <a href=@Url.Action("EmpLessons", "Lessons", new { id = item.CourseId })>Start Learning Now!</a>
-            </div>
-            <div class="gFooterRight">
-                @if (item.CompletedCourse == true)
-                {
-                    <p style="color:green">Completed</p>
-                }
-                else
-                {
-                    <p style="color:red">Incomplete</p>
-                }
-            </div>
+<div>
+    <div class="gContainer">
+        <div class="gContent">
+            @Html.DisplayFor(modelItem => item.CourseName)
         </div>
-    @*}*@
+        <div>
+            @Html.DisplayFor(modelItem => item.CourseDescription)
+        </div>
+        <div class="gFooterLeft">
+            <a href=@Url.Action("EmpLessons", "Lessons", new { id = item.CourseId })>Start Learning Now!</a>
+        </div>
+        <div class="gFooterRight">
+            @if (item.CompletedCourse == true)
+            {
+                <p style="color:green">Completed</p>
+            }
+            else
+            {
+                <p style="color:red">Incomplete</p>
+            }
+        </div>
+    </div>
+</div>
 }

@@ -1,72 +1,99 @@
 ﻿@model LMS.MVC.DATA.EF.Lesson
 
 @{
-    ViewBag.Title = "Delete";
-}
+    if (Model.IsActive == true)
+    {
+        ViewBag.Title = "Deactivate";
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Lesson</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.LessonTitle)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LessonTitle)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Introduction)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Introduction)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoURL)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.VideoURL)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PdfFilename)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PdfFilename)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.CourseName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course.CourseName)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
     }
-</div>
+    else if (Model.IsActive == false)
+    {
+        ViewBag.Title = "Activate";
+    }
+}
+<section style="text-align:center">
+    <h2>@ViewBag.Title</h2>
+    @if (Model.IsActive == true)
+    {
+    <h3>Are you sure you want to deactivate this?</h3>
+    }else if (Model.IsActive == false)
+	{
+		 <h3>Are you sure you want to activate this?</h3>
+	}
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.LessonTitle)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LessonTitle)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Introduction)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Introduction)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.VideoURL)
+            </dt>
+            @if (Model.VideoURL == null)
+            {
+                <dd>N/A</dd>
+            }
+            else
+            {
+                <dd>
+                    @Html.DisplayFor(model => model.VideoURL)
+                </dd>
+            }
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PdfFilename)
+            </dt>
+
+            @if (Model.PdfFilename == null)
+            {
+                <dd>N/A</dd>
+            }
+            else
+            {
+                <dd>
+                    @Html.DisplayFor(model => model.PdfFilename)
+                </dd>
+            }
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsActive)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Course.CourseName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Course.CourseName)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="@ViewBag.Title" class="btn btn-primary" /> |
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</section>

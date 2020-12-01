@@ -1,39 +1,38 @@
 ﻿@model LMS.MVC.UI.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Register a new Employee";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2 class="col-md-offset-2">@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-md-4 col-md-offset-2">
             @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @Placeholder = "First Name" })
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-md-4 col-md-offset-2">
             @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @Placeholder = "Last Name" })
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-md-4 col-md-offset-2">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @Placeholder = "Email" })
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-10">
+        <div class="col-md-4 col-md-offset-2">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control", @Placeholder = "Password" })
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-primary" value="Register" />
         </div>
     </div>
 }

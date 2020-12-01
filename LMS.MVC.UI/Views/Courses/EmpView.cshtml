@@ -8,26 +8,28 @@
 
 @foreach (var item in Model)
 {
-<div>
-    <div class="gContainer">
+<div style="align-content:center">
+    <div class="gContainer col-lg-5 col-md-5 col-sm-5 col-xs-11">
         <div class="gContent">
             @Html.DisplayFor(modelItem => item.CourseName)
         </div>
         <div>
             @Html.DisplayFor(modelItem => item.CourseDescription)
         </div>
-        <div class="gFooterLeft">
-            <a href=@Url.Action("EmpLessons", "Lessons", new { id = item.CourseId })>Start Learning Now!</a>
-        </div>
-        <div class="gFooterRight">
-            @if (item.CompletedCourse == true)
-            {
-                <p style="color:green">Completed</p>
-            }
-            else
-            {
-                <p style="color:red">Incomplete</p>
-            }
+        <div class="row">
+            <div class="gFooterLeft">
+                <a href=@Url.Action("EmpLessons", "Lessons", new { id = item.CourseId })>Start Learning Now!</a>
+            </div>
+            <div class="gFooterRight">
+                @if (item.CompletedCourse == true)
+                {
+                    <span style="color:green">Completed</span>
+                }
+                else
+                {
+                    <span style="color:red">Incomplete</span>
+                }
+            </div>
         </div>
     </div>
 </div>

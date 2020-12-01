@@ -79,9 +79,13 @@
                                 }
                                 else if (User.IsInRole("Manager"))
                                 {
-
-                                     <li><a href=@Url.Action("EmpProgress","CourseCompletions")>Employee Progress</a></li>
-
+                                    <li class="has-dropdown">
+                                        <a href="">Manager Features</a>
+                                        <ul class="dropdown">
+                                            <li><a href=@Url.Action("EmpProgress","CourseCompletions")>Employee Progress</a></li>
+                                            <li><a href=@Url.Action("Register","Account")>Register an Employee</a></li>
+                                        </ul>
+                                    </li>
                                 }
                                 else if (User.IsInRole("HR"))
                                 {
@@ -95,15 +99,15 @@
                                 }
 
                                 @*<li><a href=@Url.Action("EmpView","Courses")>Courses</a></li>
-                                <li class="has-dropdown">
-                                    <a href="">Courses</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">Web Design</a></li>
-                                        <li><a href="#">eCommerce</a></li>
-                                        <li><a href="#">Branding</a></li>
-                                        <li><a href="#">API</a></li>
-                                    </ul>
-                                </li>*@
+        <li class="has-dropdown">
+            <a href="">Courses</a>
+            <ul class="dropdown">
+                <li><a href="#">Web Design</a></li>
+                <li><a href="#">eCommerce</a></li>
+                <li><a href="#">Branding</a></li>
+                <li><a href="#">API</a></li>
+            </ul>
+        </li>*@
                                 @*<li><a href="teacher.html">Teacher</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="pricing.html">Pricing</a></li>*@
